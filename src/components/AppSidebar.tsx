@@ -35,6 +35,7 @@ import {
 } from './ui/dropdown-menu';
 import { auth } from '@/lib/actions/authSetup';
 import { getRoles } from '@/lib/actions/roleSetup';
+import { doLogout } from '@/lib/actions/loginSetup';
 
 const adminItems = [
   {
@@ -92,7 +93,7 @@ const userItems = [
   },
   {
     label: 'Leave Status',
-    href: '#',
+    href: '/leave-status',
     icon: Plane,
   },
 ];
@@ -100,7 +101,9 @@ const userItems = [
 const AppSidebar = async () => {
   const roles = await getRoles();
 
-  const items = roles.some((role) => role.roleId === '1') ? adminItems : userItems;
+  const items = roles.some((role) => role.roleId === '2') ? adminItems : userItems;
+
+  console.log('Roles:', roles);
 
   return (
     <Sidebar collapsible="icon">
@@ -146,9 +149,11 @@ const AppSidebar = async () => {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Account</DropdownMenuItem>
+                <Link href="/create-role">
+                  <DropdownMenuItem>Create Role</DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>Setting</DropdownMenuItem>
-                <DropdownMenuItem>Sign Out</DropdownMenuItem>
+                <DropdownMenuItem onClick={doLogout}>Sign Out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>

@@ -18,6 +18,7 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
   Roles         UserRole[] // Added relation to UserRole
+  LeaveStatuses LeaveStatus[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -96,4 +97,17 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model LeaveStatus {
+  id        String   @id @default(cuid())
+  userId    String
+  status    String // e.g., "Pending", "Approved", "Rejected"
+  startDate DateTime
+  endDate   DateTime
+  reason    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

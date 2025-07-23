@@ -18,7 +18,7 @@ const LeavePage = async () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/leave">Leave Application</BreadcrumbLink>
+            <BreadcrumbLink href="/apply-leave">Apply Leave</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

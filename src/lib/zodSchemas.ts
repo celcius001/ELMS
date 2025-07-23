@@ -11,3 +11,8 @@ export const leaveSchema = z
     message: 'To date must be after from date',
     path: ['to'],
   });
+
+export const roleSchema = z.object({
+  role: z.string().min(1, { message: 'Role is required' }),
+  description: z.string().min(1, { message: 'Description is required' }),
+});
