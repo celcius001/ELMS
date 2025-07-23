@@ -7,7 +7,6 @@ import {
   Clipboard,
   Folder,
   Home,
-  LucideIcon,
   Plane,
   SquareUserRound,
   User2,
@@ -34,6 +33,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { auth } from '@/lib/actions/authSetup';
+import { getRoles } from '@/lib/actions/roleSetup';
 
 const adminItems = [
   {
@@ -86,7 +87,7 @@ const userItems = [
   },
   {
     label: 'Apply Leave',
-    href: '#',
+    href: '/apply-leave',
     icon: Plane,
   },
   {
@@ -96,7 +97,11 @@ const userItems = [
   },
 ];
 
-const AppSidebar = () => {
+const AppSidebar = async () => {
+  const roles = await getRoles();
+
+  const items = roles.some((role) => role.roleId === '1') ? adminItems : userItems;
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="py-4">
@@ -117,7 +122,7 @@ const AppSidebar = () => {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {adminItems.map((item) => (
+              {items.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
                     <Link href={item.href}>
