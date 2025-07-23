@@ -9,7 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
-import { set, z } from 'zod';
+import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { Input } from './ui/input';
 import {
@@ -26,7 +26,7 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { Calendar } from './ui/calendar';
 import { leaveSchema } from '@/lib/zodSchemas';
-import { fi } from 'date-fns/locale';
+import { createLeave } from '@/lib/actions/leaveSetup';
 
 const ApplyLeave = () => {
   const [fromOpen, setFromOpen] = useState<boolean>(false);
@@ -42,7 +42,10 @@ const ApplyLeave = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof leaveSchema>) => console.log(data);
+  const onSubmit = async (data: z.infer<typeof leaveSchema>) => {
+    console.log(data);
+    await createLeave(data);
+  };
   return (
     <div className="bg-primary-foreground w-full rounded-lg p-4">
       <Form {...form}>

@@ -34,7 +34,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { RouteLoader } from 'next/dist/client/route-loader';
 
 const adminItems = [
   {
@@ -105,7 +104,7 @@ const AppSidebar = () => {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href="/">
-                <Image src={'/vercel.svg'} alt="logo" width={20} height={20} />
+                <Image src={'/vercel.svg'} alt="logo" className="h-5 w-5" width={20} height={20} />
                 <span>Vercel</span>
               </Link>
             </SidebarMenuButton>

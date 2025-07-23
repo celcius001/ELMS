@@ -7,9 +7,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { auth } from '@/lib/actions/authSetup';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
-const LeavePage = () => {
+const LeavePage = async () => {
+  const session = await auth();
+
+  if (!session?.user) redirect('/login');
   return (
     <div>
       <Breadcrumb>
