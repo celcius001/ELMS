@@ -102,6 +102,7 @@ model Authenticator {
 model LeaveStatus {
   id        String   @id @default(cuid())
   userId    String
+  type      String // e.g., "vacation", "sick", "nea", "other"
   status    String // e.g., "Pending", "Approved", "Rejected"
   startDate DateTime
   endDate   DateTime

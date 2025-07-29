@@ -11,7 +11,7 @@ export async function createRole(values: z.infer<typeof roleSchema>) {
   }
 
   if (!values.role || !values.description) {
-    throw new Error('Role and description are required');
+    return { success: false, error: 'Role and description are required' };
   }
 
   try {
@@ -24,7 +24,6 @@ export async function createRole(values: z.infer<typeof roleSchema>) {
     });
     return { success: true, role: newRole };
   } catch (error) {
-    console.error('Error creating role:', error);
     return { success: false, error: 'Failed to create role' };
   }
 }

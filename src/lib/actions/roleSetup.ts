@@ -4,10 +4,12 @@ import { auth } from '@/lib/actions/authSetup';
 
 export async function getRoles() {
   const session = await auth();
-  const user = await prisma.user.findUnique({
-    where: { email: session?.user?.email as string },
-    select: { Roles: true },
+  const userRoles = await prisma.userRole.findMany({
+    where: { userId: session?.user?.id as string },
+    include: {
+      role: true, // Include the role details
+    },
   });
 
-  return user?.Roles || [];
+  return userRoles.map((userRole) => userRole.role);
 }

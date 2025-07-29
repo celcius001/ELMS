@@ -101,9 +101,7 @@ const userItems = [
 const AppSidebar = async () => {
   const roles = await getRoles();
 
-  const items = roles.some((role) => role.roleId === '2') ? adminItems : userItems;
-
-  console.log('Roles:', roles);
+  const items = roles.some((role) => role.name === 'Admin') ? adminItems : userItems;
 
   return (
     <Sidebar collapsible="icon">
@@ -113,7 +111,7 @@ const AppSidebar = async () => {
             <SidebarMenuButton asChild>
               <Link href="/">
                 <Image src={'/vercel.svg'} alt="logo" className="h-5 w-5" width={20} height={20} />
-                <span>Vercel</span>
+                <span>BOHECO II</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -142,20 +140,24 @@ const AppSidebar = async () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Jhon Doe <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <Link href="/create-role">
-                  <DropdownMenuItem>Create Role</DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem>Setting</DropdownMenuItem>
-                <DropdownMenuItem onClick={doLogout}>Sign Out</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {roles[0]?.name === 'Admin' && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton>
+                    <User2 /> Administrator <ChevronUp className="ml-auto" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <Link href="/create-role">
+                    <DropdownMenuItem>Create Role</DropdownMenuItem>
+                  </Link>
+                  <Link href="/assign-leave">
+                    <DropdownMenuItem>Assign Leave</DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem>Setting</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

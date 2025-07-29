@@ -27,6 +27,7 @@ import { format } from 'date-fns';
 import { Calendar } from './ui/calendar';
 import { leaveSchema } from '@/lib/zodSchemas';
 import { createLeave } from '@/lib/actions/leaveSetup';
+import { redirect } from 'next/navigation';
 
 const ApplyLeave = () => {
   const [fromOpen, setFromOpen] = useState<boolean>(false);
@@ -35,36 +36,29 @@ const ApplyLeave = () => {
   const form = useForm<z.infer<typeof leaveSchema>>({
     resolver: zodResolver(leaveSchema),
     defaultValues: {
-      id: '001',
       type: 'vacation',
       from: new Date(),
       to: new Date(),
+      reason: '',
     },
   });
 
   const onSubmit = async (data: z.infer<typeof leaveSchema>) => {
-    console.log(data);
-    await createLeave(data);
+    const res = await createLeave(data);
+
+    if (res.success) {
+      redirect('/'); // Redirect to a success page or home
+    } else {
+      // Handle error, e.g., show a toast or alert
+      console.error('Error creating leave:', res.error);
+      alert('Failed to apply leave: ' + res.error);
+    }
   };
   return (
     <div className="bg-primary-foreground w-full rounded-lg p-4">
       <Form {...form}>
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>ID</FormLabel>
-                  <FormControl>
-                    <Input placeholder="001" {...field} />
-                  </FormControl>
-                  <FormDescription>Please enter your ID</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="type"
@@ -85,6 +79,20 @@ const ApplyLeave = () => {
                     </Select>
                   </FormControl>
                   <FormDescription>Please select a leave type</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="reason"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Reason</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter reason..." {...field} />
+                  </FormControl>
+                  <FormDescription>Please enter your Reason</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -19,13 +19,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import z from 'zod';
+import z, { set } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { roleSchema } from '@/lib/zodSchemas';
 import { useForm } from 'react-hook-form';
 import { createRole } from '@/lib/actions/createRole';
 import { redirect } from 'next/navigation';
 const AccountPage = () => {
+  const [message, setMessage] = React.useState<string | null>(null);
   const form = useForm<z.infer<typeof roleSchema>>({
     resolver: zodResolver(roleSchema),
     defaultValues: {
@@ -39,12 +40,9 @@ const AccountPage = () => {
     const res = await createRole(data);
 
     if (res.success) {
-      console.log('Role created successfully:', res.role);
-      // Optionally redirect or show a success message
       redirect('/'); // Redirect to a success page or home
     } else {
-      console.error('Error creating role:', res.error);
-      // Handle error, e.g., show an error message
+      setMessage('Error creating role: ' + res.error);
     }
   };
   return (
@@ -84,6 +82,7 @@ const AccountPage = () => {
                           <Textarea {...field} id="description" placeholder="Describe the role" />
                         </FormControl>
                         <FormMessage />
+                        {message && <p className="text-red-500">{message}</p>}
                       </FormItem>
                     )}
                   ></FormField>
