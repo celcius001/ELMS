@@ -4,17 +4,11 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { auth } from '@/lib/actions/authSetup';
-import { redirect } from 'next/navigation';
 import React from 'react';
 
 const LeavePage = async () => {
-  const session = await auth();
-
-  if (!session?.user) redirect('/login');
   return (
     <div>
       <Breadcrumb>
@@ -24,7 +18,7 @@ const LeavePage = async () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/leave">Leave Application</BreadcrumbLink>
+            <BreadcrumbLink href="/apply-leave">Apply Leave</BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

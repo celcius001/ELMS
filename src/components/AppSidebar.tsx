@@ -7,7 +7,6 @@ import {
   Clipboard,
   Folder,
   Home,
-  LucideIcon,
   Plane,
   SquareUserRound,
   User2,
@@ -34,6 +33,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { auth } from '@/lib/actions/authSetup';
+import { getRoles } from '@/lib/actions/roleSetup';
+import { doLogout } from '@/lib/actions/loginSetup';
 
 const adminItems = [
   {
@@ -86,17 +88,21 @@ const userItems = [
   },
   {
     label: 'Apply Leave',
-    href: '#',
+    href: '/apply-leave',
     icon: Plane,
   },
   {
     label: 'Leave Status',
-    href: '#',
+    href: '/leave-status',
     icon: Plane,
   },
 ];
 
-const AppSidebar = () => {
+const AppSidebar = async () => {
+  const roles = await getRoles();
+
+  const items = roles.some((role) => role.name === 'Admin') ? adminItems : userItems;
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="py-4">
@@ -105,7 +111,7 @@ const AppSidebar = () => {
             <SidebarMenuButton asChild>
               <Link href="/">
                 <Image src={'/vercel.svg'} alt="logo" className="h-5 w-5" width={20} height={20} />
-                <span>Vercel</span>
+                <span>BOHECO II</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -117,7 +123,7 @@ const AppSidebar = () => {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {adminItems.map((item) => (
+              {items.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton asChild>
                     <Link href={item.href}>
@@ -134,18 +140,24 @@ const AppSidebar = () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Jhon Doe <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Account</DropdownMenuItem>
-                <DropdownMenuItem>Setting</DropdownMenuItem>
-                <DropdownMenuItem>Sign Out</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {roles[0]?.name === 'Admin' && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton>
+                    <User2 /> Administrator <ChevronUp className="ml-auto" />
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <Link href="/create-role">
+                    <DropdownMenuItem>Create Role</DropdownMenuItem>
+                  </Link>
+                  <Link href="/assign-leave">
+                    <DropdownMenuItem>Assign Leave</DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem>Setting</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

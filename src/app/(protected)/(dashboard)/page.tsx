@@ -1,12 +1,16 @@
 import CardList from '@/components/CardList';
 import { Check, Plane, ShieldAlert, Trash, Users } from 'lucide-react';
+import React from 'react';
 
-export default function Home() {
+const DashboardPage = ({
+  children,
+  defaultOpen,
+}: {
+  children: React.ReactNode;
+  defaultOpen: boolean;
+}) => {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-4">
-      <div className="bg-primary-foreground rounded-lg p-4">
-        <CardList title="Employees" icon={Users} count={100} className="text-yellow-500" />
-      </div>
       <div className="bg-primary-foreground rounded-lg p-4">
         <CardList title="Leave" icon={Plane} count={100} className="text-green-500" />
       </div>
@@ -21,4 +25,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default DashboardPage;

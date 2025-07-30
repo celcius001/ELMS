@@ -16,8 +16,9 @@ import {
 import { Button } from './ui/button';
 import { useTheme } from 'next-themes';
 import { SidebarTrigger } from './ui/sidebar';
+import { doLogout } from '@/lib/actions/loginSetup';
 
-const Navbar = () => {
+const Navbar = ({ avatar }: { avatar: string }) => {
   const { theme, setTheme } = useTheme();
 
   return (
@@ -45,10 +46,7 @@ const Navbar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar>
-              <AvatarImage
-                src="https://avatars.githubusercontent.com/u/69677688?v=4"
-                alt="avatar"
-              />
+              <AvatarImage src={avatar} alt="avatar" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
@@ -63,7 +61,7 @@ const Navbar = () => {
               <Settings className="mr-2 h-5 w-5" />
               Settings
             </DropdownMenuItem>
-            <DropdownMenuItem variant="destructive">
+            <DropdownMenuItem variant="destructive" onClick={() => doLogout()}>
               <LogOut className="mr-2 h-5 w-5" />
               Logout
             </DropdownMenuItem>

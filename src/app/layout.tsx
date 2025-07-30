@@ -1,12 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import AppSidebar from '@/components/AppSidebar';
-import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import { SidebarProvider } from '@/components/ui/sidebar';
 import { cookies } from 'next/headers';
-import DashboardPage from './dashboard/page';
+import DashboardPage from '@/app/(protected)/(dashboard)/page';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,20 +25,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} flex antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <DashboardPage defaultOpen={defaultOpen} children={children} />
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );
