@@ -105,29 +105,32 @@ const LeaveStatus = () => {
 
   useEffect(() => {
     console.log('Fetching leave data...');
-    const fetchLeave = async () => {
-      const res = await fetch('/api/leaves');
-      console.log('Response:', res);
-      // Replace with actual user ID
-      // const res = await getAllLeaves(userId);
-      // if (res.success) {
-      //   setTableData(
-      //     res.leaves
-      //       ? res.leaves.map((leave: any) => ({
-      //           id: leave.id,
-      //           type: leave.type,
-      //           from: new Date(leave.from),
-      //           to: new Date(leave.to),
-      //           days: leave.days,
-      //           status: leave.status,
-      //         }))
-      //       : [],
-      //   );
-      // } else {
-      //   console.error('Error fetching leaves:', res.error);
-      // }
+    const fetchLeaveData = async () => {
+      try {
+        const res = await fetch('/api/leaves');
+        const data = await res.json();
+        console.log('Leave data fetched:', data);
+        if (data) {
+          setTableData(
+            data.leaves
+              ? data.leaves.map((leave: any) => ({
+                  id: leave.id,
+                  type: leave.leaveType,
+                  from: new Date(leave.from),
+                  to: new Date(leave.to),
+                  days: leave.days,
+                  status: leave.status,
+                }))
+              : [],
+          );
+        } else {
+          console.error('Error fetching leaves:', data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching leave data:', error);
+      }
     };
-    fetchLeave();
+    fetchLeaveData();
   }, []);
 
   return (
