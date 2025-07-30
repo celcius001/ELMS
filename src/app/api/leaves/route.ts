@@ -2,7 +2,7 @@ import { auth } from '@/lib/actions/authSetup';
 import { getAllLeaves } from '@/lib/actions/leaveSetup';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export async function GET(_: Request) {
   const session = await auth();
 
   if (!session || !session.user?.id) {
