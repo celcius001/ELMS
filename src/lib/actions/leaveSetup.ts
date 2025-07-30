@@ -36,11 +36,11 @@ export async function createLeave(values: z.infer<typeof leaveSchema>) {
   }
 }
 
-export async function getAllLeaves() {
+export async function getAllLeaves(userId: string) {
   try {
     const leaves = await prisma.leaveStatus.findMany({
       where: {
-        userId: (await auth())?.user?.id, // Ensure we only fetch leaves for the authenticated user
+        userId: userId,
       },
       include: {
         user: true, // Include user details if needed
@@ -61,7 +61,7 @@ export async function getAllLeaves() {
             // 0 = Sunday, 6 = Saturday
             count++;
           }
-          current.setDate(current.getDate() + 1);
+          current.setDate(current.getDate());
         }
 
         return count;
